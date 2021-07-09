@@ -3,13 +3,21 @@
 #include <iostream>
 using namespace std;
 
+// Wibisono Adiyoso (672019005)
+// Ramastya Dwiangga Supasunu (672019003)
+// Ramantya Dwiangga Supasunu (672019004)
+// Juniarto Christiawan Hartono (672019020)
+// Ivan Andika Surya (672019171)
+// Steven Sondra Allen Widodo (672019362)
+
 #define FPS 120
 #define TO_RADIANS 3.14/180.0
+#define PI 3.14
 
 GLUquadricObj* quadratic;
 const int width = 1280;
 const int height = 720;
-int i;
+int i, n;
 float sudut;
 double x_geser, y_geser, z_geser;
 
@@ -1495,26 +1503,34 @@ void pln() {
 	//listrik
 	glBegin(GL_QUADS); // depan
 	glColor3f(0.65, 0.65, 0.65);
-	glVertex3f(20, 40, -33);
+	glVertex3f(20, 43, -33);
 	glVertex3f(20, 50, -33);
 	glVertex3f(15, 50, -33);
-	glVertex3f(15, 40, -33);
+	glVertex3f(15, 43, -33);
+	glEnd();
+
+	glBegin(GL_QUADS); // depan kecil
+	glColor3f(0.7, 0.7, 0.7);
+	glVertex3f(19, 47, -32.99);
+	glVertex3f(19, 49, -32.99);
+	glVertex3f(16, 49, -32.99);
+	glVertex3f(16, 47, -32.99);
 	glEnd();
 
 	glBegin(GL_QUADS); // kiri
 	glColor3f(0.64, 0.64, 0.64);
-	glVertex3f(15, 40, -35);
+	glVertex3f(15, 43, -35);
 	glVertex3f(15, 50, -35);
 	glVertex3f(15, 50, -33);
-	glVertex3f(15, 40, -33);
+	glVertex3f(15, 43, -33);
 	glEnd();
 
 	glBegin(GL_QUADS); // kanan
 	glColor3f(0.67, 0.67, 0.67);
-	glVertex3f(20, 40, -35);
+	glVertex3f(20, 43, -35);
 	glVertex3f(20, 50, -35);
 	glVertex3f(20, 50, -33);
-	glVertex3f(20, 40, -33);
+	glVertex3f(20, 43, -33);
 	glEnd();
 
 	glBegin(GL_QUADS); // atas
@@ -1527,10 +1543,10 @@ void pln() {
 
 	glBegin(GL_QUADS); // atas
 	glColor3f(0.5, 0.5, 0.5);
-	glVertex3f(20, 40, -35); //blk
-	glVertex3f(15, 40, -35); //blk
-	glVertex3f(15, 40, -33); //depan
-	glVertex3f(20, 40, -33); //depan
+	glVertex3f(20, 43, -35); //blk
+	glVertex3f(15, 43, -35); //blk
+	glVertex3f(15, 43, -33); //depan
+	glVertex3f(20, 43, -33); //depan
 	glEnd();
 } 
 
@@ -1867,6 +1883,75 @@ void lampu() {
 	glPopMatrix();
 }
 
+void angkajam(float jarak, float x, float y, float z) {
+	glPointSize(3);
+
+	glBegin(GL_POINTS);
+	glColor3f(0, 0, 0);
+	for (n = 0; n < 360; n += 30)
+		glVertex3f(jarak * (float)sin(n * PI / 180.0) + x, jarak * (float)cos(n * PI / 180.0) + y, jarak * z);
+	glEnd();
+}
+
+void jam(int xp, int yp, int zp, int r, int banyak) {
+	float a, x, y, z;
+	glColor3f(1.0, 1.0, 1.0);
+	glBegin(GL_POLYGON);
+	a = 6.28 / banyak;
+	for (int i = 0; i < banyak; i++) {
+		x = xp + r * cos(i + a);
+		y = yp + r * sin(i + a);
+		z = zp + r * sin(a);
+		glVertex3f(x, y, z);
+	}
+	glEnd();
+}
+
+void jamdinding() {
+	glPushMatrix();//jam dinding
+	glTranslated(-42, 57, -150);
+	glRotated(0, -1, 0, 0);
+	glColor3f(0, 0, 0);
+	quadratic = gluNewQuadric();
+	gluCylinder(quadratic, 5.1, 5.1, 2.2, 32, 32);
+	glPopMatrix();
+
+	glPushMatrix();
+	jam(-42, 57.5, -148, 5.98, 500);
+	angkajam(4.4, -42, 57, -33.6);
+	glEnd();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-42, 57, -147.7);
+	glRotated(90, -1, 0, 0);
+	glColor3f(0, 0, 0);
+	//sudutmenit
+	quadratic = gluNewQuadric();
+	gluCylinder(quadratic, 0.1, 0.1, 4, 32, 32);
+	glEnd();
+	glPopMatrix();
+
+	glPushMatrix();
+
+	glTranslated(-42, 57, -147.7);
+	glRotatef(100, 20.0, -12.0, -8.0);
+	glColor3f(0, 0, 0);
+	//sudutjam
+	quadratic = gluNewQuadric();
+	gluCylinder(quadratic, 0.1, 0.1, 2.2, 32, 32);
+	glEnd();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-42, 57, -147.7);
+	glColor3f(0, 0, 0);
+	//sudutjam
+	glutSolidSphere(0.3, 50, 50);
+	glEnd();
+	glPopMatrix();
+}
+
 void draw() {
 	flag_pintu == 0;
 	matahari();
@@ -1910,12 +1995,17 @@ void draw() {
 	glPopMatrix();
 
 	glPushMatrix();
+		glTranslatef(1, 0, -1.5);
+		jamdinding();
+	glPopMatrix();
+
+	glPushMatrix();
 		glTranslatef(-33.5, -12, 42.5);
 		gelas_tea();
 	glPopMatrix();
 
 	glPushMatrix();
-		glTranslatef(0, 0, 70);
+		glTranslatef(0, -5, 70);
 		tv();
 		for (float i = 0; i < 4; i++)
 		{
