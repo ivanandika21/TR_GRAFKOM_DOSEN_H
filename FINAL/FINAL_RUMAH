@@ -15,7 +15,7 @@ double x_geser, y_geser, z_geser;
 
 float pitch = 0.0, yaw = 0.0;
 float camX = 0.0, camZ = 0.0, terbang = 40.0;
-
+float flag_pintu;
 
 void display();
 void reshape(int w, int h);
@@ -1868,6 +1868,7 @@ void lampu() {
 }
 
 void draw() {
+	flag_pintu == 0;
 	matahari();
 	ground();
 
@@ -1898,7 +1899,6 @@ void draw() {
 		atas_pilar();
 
 		tanjakan();
-		pintu();
 		
 		atap();
 		tembok_atap();
@@ -1956,18 +1956,21 @@ void draw() {
 		glTranslatef(204, 8, 25);
 		sofa();
 	glPopMatrix();
-
-	glPushMatrix();
+	
+	if (flag_pintu == 0) {
+		pintu();
+		glPushMatrix();
 		glRotatef(180, 0, 1, 0);
 		glTranslatef(-22, 0, 150);
 		pintu();
-	glPopMatrix();
+		glPopMatrix();
 
-	glPushMatrix();
+		glPushMatrix();
 		glTranslatef(0, 0, -100);
 		pintu();
-	glPopMatrix();
-
+		glPopMatrix();
+	}
+	
 	glPushMatrix();
 		glTranslatef(-25.5, 0, 0);
 		atas_pilar();
@@ -2113,6 +2116,15 @@ void keyboard(unsigned char key, int x, int y)
 	case '1':
 		z_geser += 0.5;
 		break;
+	case 'f':
+		if (flag_pintu == 0) {
+			flag_pintu = 1;
+			break;
+		}
+		else if (flag_pintu == 1) {
+			flag_pintu = 0;
+			break;
+		}
 	case '`':
 		exit(1);
 	}
