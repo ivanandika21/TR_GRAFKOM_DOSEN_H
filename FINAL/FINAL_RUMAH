@@ -1427,8 +1427,9 @@ void mesincuci() {
 void lemari() {
 	//lemari
 	glPushMatrix();
-	glTranslatef(6.5, 0, -109.5);
+	glTranslatef(6.5, 0, -121.5);
 	glLineWidth(4);
+
 	//LEMARI DEPAN
 	glBegin(GL_QUADS);
 	glColor3f(0.772, 0.388, 0.007);
@@ -1901,7 +1902,7 @@ void draw() {
 		
 		atap();
 		tembok_atap();
-		kasur(); //belumfix
+		kasur();
 		pohonnatal();
 		lemari();
 		pln();
